@@ -1,7 +1,7 @@
 #!/usr/bin/env python
-# coding: utf8
+# -*- coding: utf-8 -*-
 """
-création de "smartmaps" politiques sur le modèle de smartvote.ch avec données de l'Assemble Nationale Française Edit
+création de "smartmaps" politiques sur le modèle de smartvote.ch avec données de l'Assemblée Nationale Française Edit
 
 reads data from http://data.assemblee-nationale.fr/acteurs/deputes-en-exercice
 and http://data.assemblee-nationale.fr/travaux-parlementaires/votes
@@ -16,6 +16,9 @@ __credits__ = [
 __license__ = "LGPL"
 
 import xml.etree.ElementTree as ET
+from collections import OrderedDict
+from Goulib.table import Table # like a pandas.dataFrame, but simpler ...
+
         
 # build a dictionary of "organes" and their members deputies (="acteurs")
 tree = ET.parse('AMO10_deputes_actifs_mandats_actifs_organes_XIV.xml')
@@ -30,24 +33,36 @@ for node in nodes:
     
 acteurs={}
         
-nodes=root.find('acteurs')
-for node in nodes:
+for node in root.findall('acteurs/acteur'):
     uid=node.find('uid').text
-    ident=node.find('etatCivil').find('ident')
+    ident=node.find('etatCivil/ident')
     nom=ident.find('prenom').text+' '+ident.find('nom').text
     acteurs[uid]=nom
-    for m in node.find('mandats'):
+    for m in node.findall('mandats/mandat'):
         for o in m.find('organes'):
             ref=o.text
             organes[ref].append(uid)
-   
-print(acteurs)  
-for o in organes:   
-    print(o,organes[o])
     
-# parse the votes
+# parse the votes and build table
+
+res=Table()
         
 tree = ET.parse('Scrutins_XIV.xml')
 root=tree.getroot()
 for scrutin in root:
-    print(scrutin.find('titre').text)
+    line=OrderedDict() # so that id,date and title stay in the first cols
+    line['id']=scrutin.find('uid').text
+    line['date']=scrutin.find('dateScrutin').text
+    line['titre']=scrutin.find('titre').text
+    
+    groupes=scrutin.find('ventilationVotes/organe/groupes')
+    for groupe in groupes:
+        gid=groupe.find('organeRef').text
+        pm=groupe.find('vote/positionMajoritaire').text
+        default=['contre','abstention','pour'].index(pm)-1
+        # first we consider all members of the group voted as default
+        for actor in organes[gid]:
+            line[acteurs[actor]]=default
+    res.append(line)
+            
+res.save('votes.csv')
