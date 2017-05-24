@@ -15,6 +15,8 @@ __credits__ = [
     ]
 __license__ = "LGPL"
 
+import logging
+
 import xml.etree.ElementTree as ET
 from collections import OrderedDict
 from Goulib.table import Table # like a pandas.dataFrame, but simpler ...
@@ -57,12 +59,33 @@ for scrutin in root:
     
     groupes=scrutin.find('ventilationVotes/organe/groupes')
     for groupe in groupes:
-        gid=groupe.find('organeRef').text
+        ref=groupe.find('organeRef').text
         pm=groupe.find('vote/positionMajoritaire').text
-        default=['contre','abstention','pour'].index(pm)-1
-        # first we consider all members of the group voted as default
-        for actor in organes[gid]:
+        votes=['contre','abstention','pour']
+        default=votes.index(pm)-1 # against=-1, no vote=0
+        
+        # first we consider all members of the group voted as default:
+        for actor in organes[ref]:
             line[acteurs[actor]]=default
+            
+        # then remove those who didn't vote:
+        for votant in groupe.find('vote/decompteNominatif/nonVotants'):
+            ref=votant.find('acteurRef').text
+            try:    
+                del line[acteurs[ref]]
+            except KeyError:
+                pass # already deleted (in a different group)
+        
+        # and modify those who voted differently:
+        for i,vote in enumerate(votes):
+            for votant in groupe.find('vote/decompteNominatif/%ss'%vote):
+                ref=votant.find('acteurRef').text
+                try:
+                    line[acteurs[ref]]=i-1
+                    print(acteurs[ref],'voted',vote)
+                except KeyError:
+                    logging.error("actor ref %s doesn't exist"%ref)
+            
     res.append(line)
             
-res.save('votes.csv')
+res.save('votes.csv',encoding='iso-8859-15')
