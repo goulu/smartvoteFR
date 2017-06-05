@@ -9,7 +9,7 @@ source des données:
 * http://data.assemblee-nationale.fr/acteurs/deputes-en-exercice
 * http://data.assemblee-nationale.fr/travaux-parlementaires/votes
 
-##Etat actuel
+## Etat actuel
 
  scrutins.py produit la table votes.csv avec:
 * une ligne par vote à l'assemblée nationale depuis jeuillet 2012 à novembre 2016
@@ -26,15 +26,15 @@ Premier calcul et visualisation par Antoine Bourget:
 
 ![resultat](resultat.jpg)
 
-##A faire
+## A faire
 
-[ ] orienter "gauche/droite" correctement : 
+- [ ] orienter "gauche/droite" correctement : 
 comme le le gouvernement était socialiste pendant la période considérée,
 il est probable que les voix "pour" (=1) la plupart des textes votés
 corresponde à la "gauche" alors que les voix "contre" (-1) indiquent la droite
-[ ] indiquer les valeurs propres des 3 premiers axes
-[ ]indiquer le nom des députés
-[ ]colorier les points par groupe (=parti)
+- [ ] indiquer les valeurs propres des 3 premiers axes
+- [ ] indiquer le nom des députés
+- [ ] colorier les points par groupe (=parti)
 
 Toute aide est bienvenue !
   
