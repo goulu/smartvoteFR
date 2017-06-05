@@ -1,0 +1,100 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 9.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[      2641,         91]
+NotebookOptionsPosition[      2402,         78]
+NotebookOutlinePosition[      2742,         93]
+CellTagsIndexPosition[      2699,         90]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"AAA", "=", 
+   RowBox[{
+   "Import", "[", 
+    "\"\</home/unioviguests/Desktop/Oviedo/VotesExcelgood.csv\>\"", "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"BBB", "=", 
+   RowBox[{"Table", "[", 
+    RowBox[{
+     RowBox[{"AAA", "[", 
+      RowBox[{"[", "i", "]"}], "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"i", ",", "2", ",", "1355"}], "}"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"CCC", "=", 
+   RowBox[{
+    RowBox[{"Transpose", "[", "BBB", "]"}], ".", "BBB"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"syst", "=", 
+   RowBox[{"Eigensystem", "[", 
+    RowBox[{"CCC", "*", "1."}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"vect1", "=", 
+   RowBox[{
+    RowBox[{"syst", "[", 
+     RowBox[{"[", "2", "]"}], "]"}], "[", 
+    RowBox[{"[", "1", "]"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"vect2", "=", 
+   RowBox[{
+    RowBox[{"syst", "[", 
+     RowBox[{"[", "2", "]"}], "]"}], "[", 
+    RowBox[{"[", "2", "]"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"image", "=", 
+   RowBox[{"ListPlot", "[", 
+    RowBox[{
+     RowBox[{"Transpose", "[", 
+      RowBox[{"{", 
+       RowBox[{"vect1", ",", "vect2"}], "}"}], "]"}], ",", 
+     RowBox[{"Axes", "\[Rule]", "False"}], ",", 
+     RowBox[{"PlotStyle", "\[Rule]", 
+      RowBox[{"PointSize", "[", ".004", "]"}]}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Export", "[", 
+   RowBox[{
+   "\"\</home/unioviguests/Desktop/Oviedo/resultat.jpg\>\"", ",", "image", 
+    ",", 
+    RowBox[{"ImageResolution", "\[Rule]", "500"}]}], "]"}], ";"}]}], "Input",
+ CellChangeTimes->{{3.704635333970462*^9, 3.7046353546900663`*^9}, {
+  3.705294649176362*^9, 3.705294658988966*^9}, {3.705295057636775*^9, 
+  3.705295098069915*^9}}]
+},
+WindowSize->{1353, 910},
+WindowMargins->{{239, Automatic}, {-239, Automatic}},
+FrontEndVersion->"9.0 for Linux x86 (64-bit) (February 7, 2013)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[557, 20, 1841, 56, 187, "Input"]
+}
+]
+*)
+
+(* End of internal cache information *)
